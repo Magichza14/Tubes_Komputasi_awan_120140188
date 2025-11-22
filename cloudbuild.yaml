@@ -1,0 +1,12 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/three-tier-app/frontend:$SHORT_SHA', './frontend']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/three-tier-app/frontend:$SHORT_SHA']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/three-tier-app/api-layer:$SHORT_SHA', './api-layer']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/three-tier-app/api-layer:$SHORT_SHA']
+images:
+- 'us-central1-docker.pkg.dev/$PROJECT_ID/three-tier-app/frontend:$SHORT_SHA'
+- 'us-central1-docker.pkg.dev/$PROJECT_ID/three-tier-app/api-layer:$SHORT_SHA'
