@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Frontend - CI4 MVP</title>
+  <style>
+    body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; padding: 24px }
+    button { padding: 8px 12px; font-size: 16px }
+    pre { background:#f5f5f5; padding:12px; border-radius:6px }
+  </style>
+</head>
+<body>
+  <h1>Frontend - CI4 MVP</h1>
+  <p>Tekan tombol di bawah untuk memanggil endpoint API CI4 (<code>/api/data</code>).</p>
+  <button id="btn">Get Data</button>
+  <h2>Response</h2>
+  <pre id="output">(belum ada)</pre>
+
+  <script>
+    // Ubah BASE_API jika backend dijalankan di host/port berbeda
+    const BASE_API = 'http://localhost:8080';
+
+    document.getElementById('btn').addEventListener('click', async () => {
+      const out = document.getElementById('output');
+      out.textContent = 'Memanggil API...';
+      try {
+        const res = await fetch(`${BASE_API}/api/data`, { method: 'GET' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        out.textContent = JSON.stringify(json, null, 2);
+      } catch (err) {
+        out.textContent = 'Error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>

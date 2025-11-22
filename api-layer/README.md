@@ -1,103 +1,33 @@
-# API Layer (CodeIgniter 4)
+````markdown name=api-layer/README.md
+# API Layer (CodeIgniter 4) - MVP
 
-Folder untuk backend API menggunakan CodeIgniter 4 (CI4).
+Folder ini berisi contoh minimum untuk endpoint API sederhana menggunakan CodeIgniter 4.
 
-Struktur yang disarankan (CI4)
-- app/
-  - Controllers/ : endpoint API (mis. Api/Hello.php)
-  - Models/ : model untuk akses data
-  - Filters/ : middleware (mis. CORS, auth)
-  - Config/ : Routes.php, App.php, Database.php
-  - Validation/ : rules untuk input
-- public/ : entrypoint web server (index.php)
-- writable/ : cache, logs, uploads (pastikan writable oleh webserver)
-- composer.json
-- .env (lokal, jangan commit)
-- tests/ : unit/integration tests
-- Dockerfile, docker-compose.yml (opsional)
+Isi yang ditambahkan:
+- app/Controllers/Api/Data.php : controller contoh yang mengembalikan data mock
+- routes.api.php : snippet rute yang bisa Anda gabungkan ke `app/Config/Routes.php`
+- .env.example : contoh konfigurasi environment lokal
 
-Persyaratan
-- PHP 7.4+ (sesuai kebutuhan CI4 versi yang dipakai)
-- Composer
-- Database (MySQL/Postgres/SQLite) sesuai konfigurasi
-
-Quickstart lokal (clone existing repo)
-1. cd api-layer
-2. composer install
-3. cp env .env            # atau salin file .env.example jika tersedia
-4. Edit .env: sesuaikan database, app.baseURL (mis. app.baseURL = 'http://localhost:8080')
-5. Pastikan folder writable dapat ditulis:
-   chmod -R 0777 writable
-6. Jalankan development server:
+Langkah cepat untuk menjalankan (jika belum ada project CI4):
+1. Buat project CI4 di folder ini:
+   composer create-project codeigniter4/appstarter api-layer
+2. Salin file controller contoh ke `api-layer/app/Controllers/Api/Data.php` (overwrite jika perlu)
+3. Gabungkan snippet `routes.api.php` ke file `api-layer/app/Config/Routes.php` (atau tambahkan group `api` sesuai contoh)
+4. Salin `.env.example` menjadi `.env` dan sesuaikan nilai (app.baseURL dan database)
+5. Pastikan folder writable:
+   chmod -R 0777 api-layer/writable
+6. Jalankan server dev:
+   cd api-layer
    php spark serve --host=0.0.0.0 --port=8080
-7. Akses health check / sample endpoint: http://localhost:8080/api/hello
 
-Inisialisasi project (jika belum ada)
-- Buat skeleton CI4:
-  composer create-project codeigniter4/appstarter api-layer
-- Masuk ke folder:
-  cd api-layer
-- Atur .env, baseURL, database, lalu jalankan php spark serve
+Contoh endpoint (setelah berjalan):
+- GET /api/data -> mengembalikan JSON: { "data": "Data dari API - MOCK" }
 
-Contoh endpoint sederhana
-- app/Controllers/Api/Hello.php
-  - method index() mengembalikan JSON { "message": "Hello from CI4 API" }
-- Routes: tambahkan pada app/Config/Routes.php
-  $routes->group('api', function($routes){
-    $routes->get('hello', 'Api\Hello::index');
-  });
+CORS
+Untuk memanggil API dari frontend (lokal berbeda origin), aktifkan CORS.
+- Anda bisa menambahkan filter CORS di `app/Config/Filters.php` atau menggunakan paket CORS.
 
-CORS / Keamanan
-- Untuk dipanggil oleh frontend, tambahkan filter CORS (atau gunakan paket/community CORS)
-- Atur CSRF hanya pada rute yang perlu (untuk API token/Stateless, biasanya CSRF dimatikan dan digantikan auth JWT)
-- Validasi input dengan Validation library dan sanitize output
-
-Autentikasi & otorisasi (opsional)
-- Gunakan JWT / OAuth untuk API stateless
-- Simpan secret di .env (JWT_SECRET)
-- Buat middleware (Filter) untuk memeriksa token pada route group /api yang protected
-
-Database / Migrations
-- Gunakan Migration dan Seeder:
-  php spark migrate
-  php spark db:seed NamaSeeder
-- Simpan skema di app/Database/Migrations dan Seeder di app/Database/Seeds
-
-Testing & CI
-- Tambahkan unit/integration tests di folder tests/
-- Setup GitHub Actions untuk:
-  - composer install
-  - menjalankan php -v checks
-  - menjalankan phpunit
-  - menjalankan static analysis (optional) seperti phpstan
-
-Docker (opsional)
-- Buat Dockerfile berbasis php:fpm + composer dan docker-compose.yml dengan service db, php, nginx
-- Pastikan public/ dipetakan ke Nginx root
-
-Health check & monitoring
-- Tambahkan route /health yang mengembalikan status aplikasi dan koneksi DB
-- Siapkan logging (writable/logs) dan monitoring endpoint jika perlu
-
-Contoh checklist awal
-- [ ] Inisialisasi CodeIgniter 4 project (composer create-project)
-- [ ] Tambahkan route /api/hello dan controller contoh
-- [ ] Konfigurasi .env dan database
-- [ ] Buat migration & seed awal untuk tabel yang diperlukan
-- [ ] Tambahkan filter CORS dan middleware auth JWT (jika perlu)
-- [ ] Tambahkan Dockerfile dan docker-compose (opsional)
-- [ ] Tambahkan CI pipeline (GitHub Actions) untuk build/test
-
-Contoh minimal controller (referensi)
-```php
-<?php namespace App\Controllers\Api;
-
-use CodeIgniter\RESTful\ResourceController;
-
-class Hello extends ResourceController
-{
-    public function index()
-    {
-        return $this->respond(['message' => 'Hello from CI4 API']);
-    }
-}
+Catatan
+- `routes.api.php` disediakan sebagai file snippet agar tidak menimpa konfigurasi `app/Config/Routes.php` yang mungkin sudah ada.
+- Jika Anda memilih men-deploy API bersama frontend, sesuaikan `BASE_API` di `frontend/index.html`.
+````
