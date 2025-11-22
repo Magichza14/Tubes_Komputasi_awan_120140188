@@ -28,9 +28,3 @@ Konfigurasi
 - Gunakan variabel lingkungan untuk base API (mis. FRONTEND_API_URL)
 - Tambahkan konfigurasi ESLint/Prettier sesuai kebutuhan
 - Tambahkan proxy dev server jika perlu (mis. Vite/CRA proxy)
-
-Checklist awal / TODO
-- [ ] Pilih toolchain (React/Vue/Svelte/Vanilla) dan inisialisasi project
-- [ ] Tambahkan folder src/ with basic App component
-- [ ] Tambahkan CI build/test (GitHub Actions)
-- [ ] Dokumentasi pengembangan lokal
