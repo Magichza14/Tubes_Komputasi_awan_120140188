@@ -1,0 +1,102 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6
+    margin: 0;
+    padding: 20px;
+    color: #333;
+  }
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    backgroung: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #555;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-top: 25px;
+}
+
+/* Bagian Input */
+.input-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.input-section input[type="text"],
+.input-section input[type="number"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex-grow: 1;
+}
+
+.input-section button {
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.input-section button:hover {
+    background-color: #218838;
+}
+
+/* Tabel Inventaris */
+#inventoryTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+#inventoryTable th, #inventoryTable td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+#inventoryTable th {
+  background-color: #007bff;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+#inventoryTable tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#inventoryTable tr:hover {
+  background-color: #f1f1f1;
+}
+
+.delete-btn {
+  padding: 5px 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 0.9em;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
