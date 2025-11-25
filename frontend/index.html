@@ -1,38 +1,86 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Frontend - CI4 MVP</title>
-  <style>
-    body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; padding: 24px }
-    button { padding: 8px 12px; font-size: 16px }
-    pre { background:#f5f5f5; padding:12px; border-radius:6px }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventaris Barang Kantor</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Frontend - CI4 MVP</h1>
-  <p>Tekan tombol di bawah untuk memanggil endpoint API CI4 (<code>/api/data</code>).</p>
-  <button id="btn">Get Data</button>
-  <h2>Response</h2>
-  <pre id="output">(belum ada)</pre>
+    <div class="container">
+        <h1>📦 Inventaris Barang Kantor</h1>
 
-  <script>
-    // Ubah BASE_API jika backend dijalankan di host/port berbeda
-    const BASE_API = 'http://localhost:8080';
+        <div class="input-section">
+            <input type="text" id="itemName" placeholder="Nama Barang" required>
+            <input type="number" id="itemQuantity" placeholder="Jumlah" min="1" required>
+            <button onclick="addItem()">Tambah Barang</button>
+        </div>
 
-    document.getElementById('btn').addEventListener('click', async () => {
-      const out = document.getElementById('output');
-      out.textContent = 'Memanggil API...';
-      try {
-        const res = await fetch(`${BASE_API}/api/data`, { method: 'GET' });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-        out.textContent = JSON.stringify(json, null, 2);
-      } catch (err) {
-        out.textContent = 'Error: ' + err.message;
-      }
-    });
-  </script>
+        <h2>Daftar Barang</h2>
+        <table id="inventoryTable">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Nama Barang</th>
+                    <th>Jumlah</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        let inventory = [];
+        let itemCounter = 1;
+
+        function addItem() {
+            const nameInput = document.getElementById('itemName');
+            const quantityInput = document.getElementById('itemQuantity');
+            const name = nameInput.value.trim();
+            const quantity = parseInt(quantityInput.value);
+
+            if (name && quantity > 0) {
+                const item = {
+                    id: itemCounter++,
+                    name: name,
+                    quantity: quantity
+                };
+                inventory.push(item);
+                renderTable();
+
+                // Reset input
+                nameInput.value = '';
+                quantityInput.value = '';
+            } else {
+                alert('Mohon isi Nama Barang dan Jumlah yang valid.');
+            }
+        }
+
+        function deleteItem(id) {
+            inventory = inventory.filter(item => item.id !== id);
+            renderTable();
+        }
+
+        function renderTable() {
+            const tableBody = document.querySelector('#inventoryTable tbody');
+            tableBody.innerHTML = '';
+            
+            inventory.forEach((item, index) => {
+                const row = tableBody.insertRow();
+                row.insertCell().textContent = index + 1; // No urut
+                row.insertCell().textContent = item.name;
+                row.insertCell().textContent = item.quantity;
+                
+                const actionCell = row.insertCell();
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Hapus';
+                deleteButton.className = 'delete-btn';
+                deleteButton.onclick = () => deleteItem(item.id);
+                actionCell.appendChild(deleteButton);
+            });
+        }
+    </script>
 </body>
 </html>
